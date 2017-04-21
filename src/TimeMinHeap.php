@@ -9,6 +9,7 @@
 
 namespace Panlatent\Timer;
 
+use InvalidArgumentException;
 use SplMinHeap;
 
 /**
@@ -22,9 +23,13 @@ class TimeMinHeap extends SplMinHeap
 {
     /**
      * @param \Panlatent\Timer\TimerInterface $timer
+     * @throws \InvalidArgumentException
      */
     public function insert($timer)
     {
+        if ( ! is_object($timer) || ! $timer instanceof TimerInterface) {
+            throw new InvalidArgumentException('TimeMinHeap only accept ' . TimerInterface::class . ' object');
+        }
         $timer->setBorn((int)(microtime(true) * 1000));
         parent::insert($timer);
     }
